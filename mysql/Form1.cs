@@ -34,43 +34,31 @@ namespace mysql
     {
         mysql Mysql = new mysql();
 
+        
+
         public Form1()
         {
             InitializeComponent();
         }
 
-   
-
-
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            TableBuilding();//先创建表
 
         }
 
-        private void button_CreateDB_Click(object sender, EventArgs e)
+        /// <summary>
+        /// 在已有的数据库dbdb中建表
+        /// </summary>
+        private void TableBuilding()
         {
-            Mysql.CreateDB("dbdb");
-        }
+            string[] NewTable = { Mysql.AssessmentBasisStatusTable, Mysql.RoutingStatusTable,Mysql.NetworkingTimeAcquisitionTable,Mysql.NetworkingRoundaboutCapabilityAcquisitionTable,Mysql.MessageServiceStatusTable,Mysql.VoiceServiceStatusTable };
 
-        private void button_DropDB_Click(object sender, EventArgs e)
-        {
-            Mysql.DropDB("dbdb");
-        }
-
-        private void button_CreateTable_Click(object sender, EventArgs e)
-        {
-            Mysql.CreateTable("dbdb", "Test (Field1 VarChar(50), Field2 Integer)");
-        }
-
-        private void button_DropTable_Click(object sender, EventArgs e)
-        {
-            Mysql.DropTable("dbdb", "Test");
-        }
-
-        private void button_OpenDB_Click(object sender, EventArgs e)
-        {
-            Mysql.ConnectMysql("db");
+            for (int i = 0; i < NewTable.Length; i++)
+            {
+                Mysql.CreateTable("dbdb", NewTable[i]);
+            }
         }
     }
 }

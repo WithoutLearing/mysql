@@ -15,7 +15,27 @@ namespace mysql
         /// <summary>
         /// 考核基础状态表字段
         /// </summary>
-        public string AssessmentBasisStatusTable = "AssessmentBasisStatusTable (Uuid INT , KHKM VARCHAR(50))";
+        public string AssessmentBasisStatusTable = "AssessmentBasisStatusTable (Uuid INT ,KHKM VARCHAR(50),DWXX VARCHAR(32),GHDTSL INT,KHSJ DOUBLE,JSHJ DOUBLE,PBDN INT,ZHBC INT,CLID INT,KHMD VARCHAR(256),KHMS VARCHAR(256))";
+        /// <summary>
+        /// 路由状态表
+        /// </summary>
+        public string RoutingStatusTable = "RoutingStatusTable (Uuid INT,KHKM VARCHAR(50),DTMac VARCHAR(50),PBDN INT,CARID INT,DTID VARCHAR(5),KHSJ DOUBLE,KHDD VARCHAR(32),DTSL INT,LINKNUM INT,KYLL INT,ZDJJS INT,NODEINFO VARCHAR(16))";
+        /// <summary>
+        /// 组网时间采集表
+        /// </summary>
+        public string NetworkingTimeAcquisitionTable = "NetworkingTimeAcquisitionTable (Uuid INT,KHKM VARCHAR(50),CKLC INT,PBDN INT,RWKSSJ DOUBLE,ZWCGSJ DOUBLE)";
+        /// <summary>
+        /// 组网迂回能力采集表
+        /// </summary>
+        public string NetworkingRoundaboutCapabilityAcquisitionTable = "NetworkingRoundaboutCapabilityAcquisitionTable (Uuid INT,KHKM VARCHAR(50),PBDN INT,CKLC INT,ZWCGSJ DOUBLE,ZWHFSJ DOUBLE)";
+        /// <summary>
+        /// 报文业务状态表
+        /// </summary>
+        public string MessageServiceStatusTable = "MessageServiceStatusTable (Uuid INT,KHKM VARCHAR(50),DTID VARCHAR(5),KHSJ DOUBLE,KHDD VARCHAR(32),BWID INT,FSSJ DOUBLE,JSHJ DOUBLE)";
+        /// <summary>
+        /// 语音业务状态表
+        /// </summary>
+        public string VoiceServiceStatusTable = "VoiceServiceStatusTable (Uuid INT,KHKM VARCHAR(50),DTID VARCHAR(5),KHSJ DOUBLE,KHDD VARCHAR(32),BWID INT,HYFSSJ DOUBLE,HYKDD INT,HYJLCGL INT)";
 
 
         /// <summary>
