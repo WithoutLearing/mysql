@@ -2,6 +2,10 @@
 drop database 数据库名;  //删除数据库
 CREATE TABLE 数据表名 (column_name column_type);//创建数据表
 DROP TABLE 数据表名 ; //删除数据表
+INSERT INTO table_name ( field1, field2,...fieldN ) VALUES ( value1, value2,...valueN );  //插入数据
+UPDATE <表名> SET 字段 1=值 1 [,字段 2=值 2… ] [WHERE 子句 ] [ORDER BY 子句] [LIMIT 子句];//修改数据
+                       
+                       
 
 
 
