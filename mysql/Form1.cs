@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -51,6 +52,7 @@ namespace mysql
 
     public partial class Form1 : Form
     {
+        
         mysql Mysql = new mysql();
 
         public static AssessmentBasisStatusTableStruct assessmentBasisStatusTable;
@@ -65,6 +67,7 @@ namespace mysql
         {
             TableBuilding();//先创建表
             FillTextbox();//初始化TEXTBOX
+            
         }
 
         /// <summary>
@@ -131,6 +134,45 @@ namespace mysql
 
                
             }
+        }
+
+
+
+        //将结构体数据转换成字节数组
+        public static byte[] StructToBytes(object obj)
+        {
+            //得到结构体的大小
+            int size = Marshal.SizeOf(obj);
+            //创建byte数组
+            byte[] bytes = new byte[size];
+            //分配结构体大小的内存空间
+            IntPtr structPtr = Marshal.AllocHGlobal(size);
+            //将结构体拷到分配好的内存空间
+            Marshal.StructureToPtr(obj, structPtr, false);
+            //从内存空间拷到byte数组
+            Marshal.Copy(structPtr, bytes, 0, size);
+            //释放内存空间
+            Marshal.FreeHGlobal(structPtr);
+            //返回byte数组
+            return bytes;
+        }
+
+        //字节数组转换成结构
+        public static object BytesToStruct(byte[] bytes, Type type)
+        {
+            int size = Marshal.SizeOf(type);
+            if (size > bytes.Length)
+                return null;
+            IntPtr structPtr = Marshal.AllocHGlobal(size); //分配结构大小的内存空间
+            Marshal.Copy(bytes, 0, structPtr, size);       //将byte数组拷到分配好的内存空间
+            object obj = Marshal.PtrToStructure(structPtr, type);
+            Marshal.FreeHGlobal(structPtr);
+            return obj;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            byte[] AssessmentBasisStatusTableData = StructToBytes(assessmentBasisStatusTable);
         }
     }
 }
