@@ -10,9 +10,16 @@ namespace mysql
 {
     public class udp
     {
-        //设置为服务端IP与端口
-        IPEndPoint ip = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 8001);
+        //设置服务端IP与端口
+        IPEndPoint ip = new IPEndPoint(IPAddress.Parse("192.168.1.129"), 8000);
         Socket Udpsocket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+
+        public byte[] recBuff = new byte[1024];
+
+        public  udp()
+        {
+
+        }
 
         public void SendtoSever(byte[] buff)
         {
@@ -84,9 +91,12 @@ namespace mysql
         /// <param name="e"></param>
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
-            if (e.BytesTransferred > 0 && e.SocketError == SocketError.MessageSize)
+            if (e.BytesTransferred > 0 /*&& e.SocketError == SocketError.MessageSize*/)
             {
                 //处理接收到的数据(e.Buffer);
+                Array.Copy(e.Buffer, 0, recBuff, 0, e.BytesTransferred);
+
+               
             }
             else
             {

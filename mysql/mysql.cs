@@ -182,7 +182,7 @@ namespace mysql
             try
             {
                 string sqlCommand = "SELECT * FROM AssessmentBasisStatusTable";//首先查询表中是否有数据
-                string connstr = "Server = localhost; UserId = root; Password = 19891018; Database = dbdb";//数据库登录信息，其中localhost代表本地计算机
+                string connstr = "Server = localhost; UserId = root; Password = 19891018; Database = collectdb";//数据库登录信息，其中localhost代表本地计算机
                 MySqlConnection mySqlConnection = new MySqlConnection(connstr);
                 MySqlCommand cmd = new MySqlCommand(sqlCommand, mySqlConnection);
                 MySqlDataReader reader = null;//查询结果读取器
@@ -205,8 +205,9 @@ namespace mysql
                 {
                     reader.Close();//必须先关闭查询
 
-                    sqlCommand = string.Format("INSERT INTO AssessmentBasisStatusTable VALUES ({0})", Form1.assessmentBasisStatusTable.Uuid);
-                    //  sqlCommand = string.Format("INSERT INTO AssessmentBasisStatusTable SET Uuid = {0}", Form1.assessmentBasisStatusTable.Uuid);
+                    //sqlCommand = string.Format("INSERT INTO AssessmentBasisStatusTable VALUES ({0})", Form1.assessmentBasisStatusTable.Uuid);
+                    sqlCommand = string.Format("INSERT INTO AssessmentBasisStatusTable SET Uuid={0},KHKM='{1}',DWXX='{2}',GHDTSL={3},KHSJ={4},JSHJ={5},PBDN={6},ZHBC={7},CLID={8},KHMD='{9}',KHMS='{10}'", Form1.assessmentBasisStatusTable.Uuid, Form1.assessmentBasisStatusTable.KHKM,
+                        Form1.assessmentBasisStatusTable.DWXX, Form1.assessmentBasisStatusTable.GHDTSL, Form1.assessmentBasisStatusTable.KHSJ, Form1.assessmentBasisStatusTable.JSHJ, Form1.assessmentBasisStatusTable.PBDN, Form1.assessmentBasisStatusTable.ZHBC, Form1.assessmentBasisStatusTable.CLID, Form1.assessmentBasisStatusTable.KHMD, Form1.assessmentBasisStatusTable.KHMS);
                     MySqlCommand InsertCmd = new MySqlCommand(sqlCommand, mySqlConnection);
                     InsertCmd.ExecuteNonQuery();
                 }
@@ -227,7 +228,7 @@ namespace mysql
         {
             string[] OldData = new string[11];
             string sqlCommand = "SELECT * FROM AssessmentBasisStatusTable";//首先查询表中是否有数据
-            string connstr = "Server = localhost; UserId = root; Password = 19891018; Database = dbdb";//数据库登录信息，其中localhost代表本地计算机
+            string connstr = "Server = localhost; UserId = root; Password = 19891018; Database = collectdb";//数据库登录信息，其中localhost代表本地计算机
             MySqlConnection mySqlConnection = new MySqlConnection(connstr);
             MySqlCommand cmd = new MySqlCommand(sqlCommand, mySqlConnection);
             MySqlDataReader reader = null;//查询结果读取器

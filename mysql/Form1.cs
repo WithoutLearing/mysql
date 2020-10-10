@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;//调用MySQL动态库
@@ -18,7 +19,9 @@ namespace mysql
     public struct AssessmentBasisStatusTableStruct
     {
         public int Uuid; //考核唯一标识
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string KHKM;//考核科目
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string DWXX;//考核地点
         public short GHDTSL;//规划电台数量
         public double KHSJ;//考核开始时间
@@ -26,7 +29,9 @@ namespace mysql
         public short PBDN;//平板电脑
         public short ZHBC;//作战编成
         public int CLID;//车辆ID
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string KHMD;//预留
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
         public string KHMS;//预留
     }
 
@@ -52,8 +57,9 @@ namespace mysql
 
     public partial class Form1 : Form
     {
-        
         mysql Mysql = new mysql();
+        udp Udp = new udp();
+        UdpServiceSocket udpServiceSocket = new UdpServiceSocket();
 
         public static AssessmentBasisStatusTableStruct assessmentBasisStatusTable;
 
@@ -67,11 +73,40 @@ namespace mysql
         {
             TableBuilding();//先创建表
             FillTextbox();//初始化TEXTBOX
-            
+            udpServiceSocket.Start(8000);
+
+            //创建新线程，用来接收UDp的数据
+            Thread mythread = new Thread(ShowRec);
+            mythread.IsBackground = true;
+            mythread.Start();
+
+
         }
 
         /// <summary>
-        /// 在已有的数据库dbdb中建表
+        /// 接收数据并显示在窗体上
+        /// </summary>
+        private void ShowRec()
+        {
+            while (true)
+            {
+                if (udpServiceSocket.recvBuff != null)
+                {
+                    this.Invoke(new Action(() =>
+                    {
+                        textBox1.Text = udpServiceSocket.recvBuff[0].ToString();
+                        textBox2.Text = udpServiceSocket.recvBuff[1].ToString();
+                        textBox3.Text = udpServiceSocket.recvBuff[2].ToString();
+
+                    }));
+                 
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// 在已有的数据库collectdb中建表
         /// </summary>
         private void TableBuilding()
         {
@@ -79,7 +114,7 @@ namespace mysql
 
             for (int i = 0; i < NewTable.Length; i++)
             {
-                Mysql.CreateTable("dbdb", NewTable[i]);
+                Mysql.CreateTable("collectdb", NewTable[i]);
                 
             }
         }
@@ -172,7 +207,14 @@ namespace mysql
 
         private void button1_Click(object sender, EventArgs e)
         {
-            byte[] AssessmentBasisStatusTableData = StructToBytes(assessmentBasisStatusTable);
+            //byte[] AssessmentBasisStatusTableData = StructToBytes(assessmentBasisStatusTable);
+            //Udp.SendtoSever(AssessmentBasisStatusTableData);
+            udpServiceSocket.SendMessageByBroadcast("年后");
+        }
+
+        private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
